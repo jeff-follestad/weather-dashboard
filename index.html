@@ -5,39 +5,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/style.css" />
-  <title>Git it Done</title>
+  <title>Weather Dashboard</title>
 </head>
 
-<body class="flex-column min-100-vh">
-  <header class="hero">
-    <h1 class="app-title"><i class="fab fa-github"></i> Git it Done!</h1>
-    <p>Search for a GitHub user or click on a language to see a list of repositories and how many open issues they have!
-    </p>
-  </header>
+<body>
+  <div class="jumbotron jumbotron-fluid mt-2 text-center p-2"
+    style="background-color:#404040 ;color: white;">
+    <h2>Weather Dashboard</h2>
+  </div>
 
-
-  <main class="flex-row justify-space-between">
-    <div class="col-12 col-md-4">
-
-      <div class="card">
-        <h3 class="card-header text-uppercase">Search By User</h3>
-        <form id="user-form" class="card-body">
-          <label class="form-label" for="username">Username</label>
-          <input name="username" id="username" type="text" autofocus="true" class="form-input" />
-          <button type="submit" class="btn">Get User</button>
-        </form>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4 bg-light">
+        <h4 class="pt-1"><strong>Search for a City:</h4>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="search-city" aria-label="City Search"
+            aria-describedby="search-button">
+          <div class="input-group-append">
+            <button class=" btn bg-primary text-light" id="search-button"><i
+                class="fa fa-search"></i></button>
+          </div>
+        </div>
+        <button class=" btn btn-primary" type="button" id="clear-history">Clear history</button>
+        <ul class="list-group">
+        </ul>
       </div>
+      
     </div>
+  </div>
 
-    <div class="col-12 col-md-8">
-      <h2 class="subtitle">Showing Repositories for: <span id="repo-search-term"></span></h2>
-      <div id="repos-container" class="list-group">
 
-      </div>
-    </div>
+  </div>
   </main>
 
   <script src="./assets/js/homepage.js"></script>

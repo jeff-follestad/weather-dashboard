@@ -1,9 +1,9 @@
 :root {
-  --primary: #ccdad1;
-  --secondary: #9caea9;
-  --tertiary: #788585;
-  --light-dark: #6f6866;
-  --dark: #38302e;
+  --primary: #C0C0C0;
+  --secondary: #A9A9A9;
+  --tertiary: #808080;
+  --light-dark: #808080;
+  --dark: #282828;
   --border-radius: .3rem;
 }
 
@@ -21,7 +21,7 @@ body {
   font-size: 16px;
 }
 
-h1,
+h1
 h2,
 h3,
 h4,
@@ -106,10 +106,7 @@ p {
   font-size: 3rem;
   background-color: var(--primary);
   color: var(--dark);
-  padding: 0 10px;
-  display: inline-block;
-  border-radius: var(--border-radius);
-  box-shadow: 6px 5px var(--light-dark);
+
 }
 
 .list-group {
@@ -164,16 +161,11 @@ p {
 }
 
 /* FORM */
-.form-label,
 .form-input,
 .form-textarea {
   display: block;
 }
 
-.form-label {
-  font-size: 1.1rem;
-  margin: 0 0 0 5px;
-}
 
 .form-input {
   width: 100%;

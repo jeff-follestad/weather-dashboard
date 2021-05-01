@@ -1,5 +1,6 @@
 var userFormEl = document.querySelector('#user-form');
-var nameInputEl = document.querySelector('#username');
+var nameInputEl = document.querySelector('(countryname');
+// 
 var repoContainerEl = document.querySelector('#repos-container');
 var repoSearchTerm = document.querySelector('#repo-search-term');
 
@@ -8,20 +9,20 @@ var formSubmitHandler = function(event) {
   event.preventDefault();
 
   // get value from input element
-  var username = nameInputEl.value.trim();
+  var countryname = nameInputEl.value.trim();
 
-  if (username) {
-    getUserRepos(username);
+  if (countryname) {
+    getCountryName(countryname);
 
     // clear old content
     repoContainerEl.textContent = '';
     nameInputEl.value = '';
   } else {
-    alert('Please enter a GitHub username');
+    alert('Please enter a Country Name');
   }
 };
 
-var getUserRepos = function(user) {
+var getCountryName = function(user) {
   // format the github api url
   var apiUrl = 'https://api.github.com/users/' + user + '/repos';
 
