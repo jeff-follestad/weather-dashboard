@@ -1,94 +1,160 @@
-var userFormEl = document.querySelector('#user-form');
-var nameInputEl = document.querySelector('(countryname');
-// 
-var repoContainerEl = document.querySelector('#repos-container');
-var repoSearchTerm = document.querySelector('#repo-search-term');
+var city = "";
+var searchCity = $("#search-city");
+var searchButton = $("#search-button");
+var clearButton = $("#clear-history");
+var currentCity = $("#current-city");
+var currentTemperature = $("#temperature");
+var currentHumidty = $("#humidity");
+var currentWSpeed = $("#wind-speed");
+var currentUvindex = $("#uv-index");
+var sCity = [];
 
-var formSubmitHandler = function(event) {
-  // prevent page from refreshing
+function find(c) {
+  for (var i = 0; i < sCity.length; i++) {
+    if (c.toUpperCase() === sCity[i]) {
+      return -1;
+    }
+  }
+  return 1;
+}
+
+var APIKey = "886011b1e0167dcd6f6733647810506e";
+// Display the curent and future weather to the user after grabing the city form the input text box.
+function displayWeather(event) {
   event.preventDefault();
-
-  // get value from input element
-  var countryname = nameInputEl.value.trim();
-
-  if (countryname) {
-    getCountryName(countryname);
-
-    // clear old content
-    repoContainerEl.textContent = '';
-    nameInputEl.value = '';
-  } else {
-    alert('Please enter a Country Name');
+  if (searchCity.val().trim() !== "") {
+    city = searchCity.val().trim();
+    currentWeather(city);
   }
-};
+}
 
-var getCountryName = function(user) {
-  // format the github api url
-  var apiUrl = 'https://api.github.com/users/' + user + '/repos';
+function currentWeather(city) {
 
-  // make a get request to url
-  fetch(apiUrl)
-    .then(function(response) {
-      // request was successful
-      if (response.ok) {
-        console.log(response);
-        response.json().then(function(data) {
-          console.log(data);
-          displayRepos(data, user);
-        });
-      } else {
-        alert('Error: ' + response.statusText);
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+
+
+    console.log(response);
+
+    var weathericon = response.weather[0].icon;
+    var iconurl = "https://openweathermap.org/img/wn/" + weathericon + "@2x.png";
+
+    var date = new Date(response.dt * 1000).toLocaleDateString();
+
+    $(currentCity).html(response.name + "(" + date + ")" + "<img src=" + iconurl + ">");
+
+
+    var tempF = (response.main.temp - 273.15) * 1.80 + 32;
+    $(currentTemperature).html((tempF).toFixed(2) + "&#8457");
+
+    $(currentHumidty).html(response.main.humidity + "%");
+
+    var ws = response.wind.speed;
+    var windsmph = (ws * 2.237).toFixed(1);
+    $(currentWSpeed).html(windsmph + "MPH");
+
+    UVIndex(response.coord.lon, response.coord.lat);
+    forecast(response.id);
+    if (response.cod == 200) {
+      sCity = JSON.parse(localStorage.getItem("cityname"));
+      console.log(sCity);
+      if (sCity == null) {
+        sCity = [];
+        sCity.push(city.toUpperCase()
+        );
+        localStorage.setItem("cityname", JSON.stringify(sCity));
+        addToList(city);
       }
-    })
-    .catch(function(error) {
-      alert('Unable to connect to GitHub');
-    });
-};
-
-var displayRepos = function(repos, searchTerm) {
-  // check if api returned any repos
-  if (repos.length === 0) {
-    repoContainerEl.textContent = 'No repositories found.';
-    return;
-  }
-
-  repoSearchTerm.textContent = searchTerm;
-
-  // loop over repos
-  for (var i = 0; i < repos.length; i++) {
-    // format repo name
-    var repoName = repos[i].owner.login + '/' + repos[i].name;
-
-    // create a container for each repo
-    var repoEl = document.createElement('div');
-    repoEl.classList = 'list-item flex-row justify-space-between align-center';
-
-    // create a span element to hold repository name
-    var titleEl = document.createElement('span');
-    titleEl.textContent = repoName;
-
-    // append to container
-    repoEl.appendChild(titleEl);
-
-    // create a status element
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
-
-    // check if current repo has issues or not
-    if (repos[i].open_issues_count > 0) {
-      statusEl.innerHTML =
-        "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + ' issue(s)';
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+      else {
+        if (find(city) > 0) {
+          sCity.push(city.toUpperCase());
+          localStorage.setItem("cityname", JSON.stringify(sCity));
+          addToList(city);
+        }
+      }
     }
 
-    // append to container
-    repoEl.appendChild(statusEl);
+  });
+}
 
-    // append container to the dom
-    repoContainerEl.appendChild(repoEl);
+function UVIndex(ln, lt) {
+
+  var uvqURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lt + "&lon=" + ln;
+  $.ajax({
+    url: uvqURL,
+    method: "GET"
+  }).then(function (response) {
+    $(currentUvindex).html(response.value);
+  });
+}
+
+function forecast(cityid) {
+  var dayover = false;
+  var queryforcastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityid + "&appid=" + APIKey;
+  $.ajax({
+    url: queryforcastURL,
+    method: "GET"
+  }).then(function (response) {
+
+    for (i = 0; i < 5; i++) {
+      var date = new Date((response.list[((i + 1) * 8) - 1].dt) * 1000).toLocaleDateString();
+      var iconcode = response.list[((i + 1) * 8) - 1].weather[0].icon;
+      var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
+      var tempK = response.list[((i + 1) * 8) - 1].main.temp;
+      var tempF = (((tempK - 273.5) * 1.80) + 32).toFixed(2);
+      var humidity = response.list[((i + 1) * 8) - 1].main.humidity;
+
+      $("#fDate" + i).html(date);
+      $("#fImg" + i).html("<img src=" + iconurl + ">");
+      $("#fTemp" + i).html(tempF + "&#8457");
+      $("#fHumidity" + i).html(humidity + "%");
+    }
+
+  });
+}
+
+function addToList(c) {
+  var listEl = $("<li>" + c.toUpperCase() + "</li>");
+  $(listEl).attr("class", "list-group-item");
+  $(listEl).attr("data-value", c.toUpperCase());
+  $(".list-group").append(listEl);
+}
+
+function invokePastSearch(event) {
+  var liEl = event.target;
+  if (event.target.matches("li")) {
+    city = liEl.textContent.trim();
+    currentWeather(city);
   }
-};
 
-// add event listeners to forms
-userFormEl.addEventListener('submit', formSubmitHandler);
+}
+
+function loadlastCity() {
+  $("ul").empty();
+  var sCity = JSON.parse(localStorage.getItem("cityname"));
+  if (sCity !== null) {
+    sCity = JSON.parse(localStorage.getItem("cityname"));
+    for (i = 0; i < sCity.length; i++) {
+      addToList(sCity[i]);
+    }
+    city = sCity[i - 1];
+    currentWeather(city);
+  }
+
+}
+
+function clearHistory(event) {
+  event.preventDefault();
+  sCity = [];
+  localStorage.removeItem("cityname");
+  document.location.reload();
+
+}
+
+$("#search-button").on("click", displayWeather);
+$(document).on("click", invokePastSearch);
+$(window).on("load", loadlastCity);
+$("#clear-history").on("click", clearHistory);
