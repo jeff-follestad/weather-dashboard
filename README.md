@@ -1,7 +1,5 @@
 **"The Traveler's Forecast"**
 
-[OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that will provide basic setup and usage instructions. Use `localStorage` to store any persistent data.
-
 ## User Story
 
 ```
@@ -11,7 +9,7 @@ A traveler can use this mobile-first site to see the weather outlook for multipl
 ## Functionality
 
 ```
-"The Traveler's Forecast" is weather dashboard with form inputs.
+"The Traveler's Forecast" is weather dashboard with form inputs. Reliable weather data is retrieved from [OpenWeather API](https://openweathermap.org/api).
 
 When a user searches for a city, they are presented with current and future conditions for that city and that city is added to the search history.
 
