@@ -127,7 +127,6 @@ function invokePastSearch(event) {
     city = liEl.textContent.trim();
     currentWeather(city);
   }
-
 }
 
 function loadlastCity() {
@@ -143,13 +142,11 @@ function loadlastCity() {
   }
 
 }
-
 function clearHistory(event) {
   event.preventDefault();
   sCity = [];
   localStorage.removeItem("cityname");
   document.location.reload();
-
 }
 
 $("#search-button").on("click", displayWeather);
