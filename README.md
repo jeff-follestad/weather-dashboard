@@ -9,7 +9,6 @@ and plan their trips accordingly.
 
 ## Functionality
 
-```
 "The Traveler's Forecast" is weather dashboard with form inputs. Reliable weather data 
 is retrieved from [OpenWeather API](https://openweathermap.org/api).
 
