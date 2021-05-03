@@ -24,4 +24,4 @@ When a user views future weather conditions for that city, they are presented wi
 When a user clicks on a city in the search history, they are again presented with current and future conditions for that city
 ```
 
-The following image demonstrates the application functionality: .assets/TravelersForecast.png 
+The following image demonstrates the application functionality: [.assets/TravelersForecast.png] 
