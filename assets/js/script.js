@@ -19,7 +19,6 @@ function find(c) {
 }
 
 var APIKey = "886011b1e0167dcd6f6733647810506e";
-// Display the curent and future weather to the user after grabing the city form the input text box.
 function displayWeather(event) {
   event.preventDefault();
   if (searchCity.val().trim() !== "") {
@@ -81,7 +80,6 @@ function currentWeather(city) {
 }
 
 function UVIndex(ln, lt) {
-
   var uvqURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lt + "&lon=" + ln;
   $.ajax({
     url: uvqURL,
